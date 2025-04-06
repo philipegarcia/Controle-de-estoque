@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding-top: 100px;
+  padding-top: 30px;
 }
 
 h1 {
@@ -15,10 +15,10 @@ form {
   display: flex;
   flex-direction: column;
   gap: 30px;
-  padding: 30px;
+  padding: 20px;
   border-radius: 10px;
   background-color: #2e2d4e;
-  max-width: 50%;
+  max-width: 30%;
   width: 400px;
   margin-bottom: 20px;
 
@@ -94,4 +94,9 @@ form {
   & button:hover{
     opacity: 0.5;
   }
+}
+
+.card.alerta {
+  background-color: red; /* Se estoque for menor ou igual ao mínimo, muda para vermelho */
+  color: white;
 }

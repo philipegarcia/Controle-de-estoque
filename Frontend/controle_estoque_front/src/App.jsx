@@ -36,10 +36,6 @@ function App() {
     getProducts()
   }, [])
   
-//edição
-
-
-
 
   return (
     <div>
