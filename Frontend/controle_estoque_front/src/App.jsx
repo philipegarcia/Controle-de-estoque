@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import './App.css'
+import Plus from '../src/assets/mais.png'
+import Minus from '../src/assets/menos.png'
 import Trash from '../src/assets/trash.svg'
 import api from '../src/services/api'
 
@@ -9,6 +11,49 @@ function App() {
   const inputName = useRef()
   const inputAmount = useRef()
   const inputMinAmount = useRef()
+
+  const handleUpdateAmount = async (product, action) => {
+    const input = prompt(`Digite a quantidade para ${action === "add" ? "adicionar" : "retirar"}:`);
+  
+    const quantidade = parseInt(input, 10);
+    if (isNaN(quantidade) || quantidade <= 0) {
+      alert("Digite uma quantidade válida.");
+      return;
+    }
+  
+    let novaQuantidade = action === "add"
+      ? product.amount + quantidade
+      : product.amount - quantidade;
+  
+    if (novaQuantidade < 0) {
+      alert("A quantidade em estoque não pode ser negativa.");
+      return;
+    }
+  
+    const updatedProduct = {
+      ...product,
+      amount: novaQuantidade
+    };
+  
+    try {
+      await fetch(`http://localhost:3000/produtos/${product.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedProduct)
+      });
+  
+      // Atualizar a lista de produtos na tela
+      // Pode ser via reload ou atualizando o estado, depende de como está sua lógica
+      // Aqui está um exemplo básico com reload da lista:
+      window.location.reload(); // ou chame uma função tipo fetchProducts()
+  
+    } catch (error) {
+      alert("Erro ao atualizar produto");
+      console.error(error);
+    }
+  };
 
   async function getProducts() {
     const productsFromApi = await api.get('/produtos')
@@ -48,6 +93,7 @@ function App() {
         <button type='button' onClick={createProducts}>Adicionar</button>
       </form>
     </div>
+    
     <div className='container'>
       {products.map(product => (
         <div
@@ -63,6 +109,12 @@ function App() {
           <button onClick={() => deleteProducts(product.id)}>
             <img src={Trash} />
           </button>
+          <button onClick={() => handleUpdateAmount(product, "add")}>
+            <img src={Plus} />
+        </button>
+        <button onClick={() => handleUpdateAmount(product, "remove")}>
+            <img src={Minus} />
+        </button>
           </div>
         </div>
       ))}

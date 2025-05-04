@@ -97,6 +97,6 @@ form {
 }
 
 .card.alerta {
-  background-color: red; /* Se estoque for menor ou igual ao mínimo, muda para vermelho */
+  background-color: red; 
   color: white;
 }
